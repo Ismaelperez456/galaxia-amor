@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Galaxia del Amor ❤️</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- ========================= -->
+    <!-- INTRO -->
+    <!-- ========================= -->
+
+    <div id="intro">
+
+        <div id="intro-content">
+
+            <h1 id="introTitle"></h1>
+
+            <button id="startBtn">
+                ❤️ Entrar ❤️
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- ESCENA -->
+    <!-- ========================= -->
+
+    <canvas id="c"></canvas>
+<div id="hint">
+    ✨ Algunas fotografías esconden recuerdos..❤️
+</div>
+    <!-- ========================= -->
+    <!-- REPRODUCTOR -->
+    <!-- ========================= -->
+
+    <div class="player">
+
+        <button id="play">▶️</button>
+
+        <div class="progress" id="progress">
+
+            <div class="progress-bar" id="progress-bar"></div>
+
+        </div>
+
+        <div class="time" id="time">
+
+            0:00 / 0:00
+
+        </div>
+
+    </div>
+
+    <audio id="audio" loop>
+
+        <source src="musica/love.mp3" type="audio/mpeg">
+
+    </audio>
+
+   <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/build/three.min.js"></script>
+
+<div id="photoModal" class="photoModal">
+
+    <div class="photoCard">
+
+        <img id="modalImage">
+
+        <p id="modalText"></p>
+
+        <button id="closePhoto">Cerrar ❤️</button>
+
+    </div>
+
+</div>
+<div id="finalModal" class="photoModal">
+
+    <div class="photoCard">
+
+        <h2 style="color:#ff77aa;font-size:36px;">
+            ❤️ Para ti, mi amor ❤️
+        </h2>
+
+        <p id="finalText">
+❤️ Para ti, mi amor ❤️
+
+Si estás leyendo esto, significa que recorriste cada rincón de este pequeño universo que preparé para ti.
+
+Cada estrella representa un pensamiento que tuve sobre ti.
+
+Cada fotografía guarda un recuerdo que nunca quiero olvidar.
+
+Cada palabra fue escrita con el mismo sentimiento con el que late mi corazón cuando pienso en ti.
+
+Quizás este sea solo un sitio web, pero detrás de cada detalle hay horas de ilusión, cariño y ganas de hacerte sonreír.
+
+Gracias por llegar a mi vida.
+
+Gracias por enseñarme que el amor también puede sentirse como paz, confianza y hogar.
+
+No sé qué nos deparará el futuro, pero sí sé una cosa...
+
+Quiero caminarlo contigo.
+
+Hoy...
+
+Mañana...
+
+Y todos los días que la vida nos regale.
+
+Te amo infinitamente. ❤️
+
+Con todo mi amor,
+
+Ismael ❤️
+        </p>
+
+        <button id="closeFinal">
+            ❤️ Seguir mirando las estrellas ❤️
+        </button>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>
