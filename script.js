@@ -609,6 +609,42 @@ window.addEventListener("wheel", (event) => {
     );
 
 }); 
+
+let lastPinchDistance = null;
+
+function getDistance(t1, t2) {
+    const dx = t1.clientX - t2.clientX;
+    const dy = t1.clientY - t2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+window.addEventListener("touchmove", (e) => {
+
+    if (e.touches.length !== 2) {
+        lastPinchDistance = null;
+        return;
+    }
+
+    e.preventDefault();
+
+    const distance = getDistance(e.touches[0], e.touches[1]);
+
+    if (lastPinchDistance !== null) {
+
+        const delta = lastPinchDistance - distance;
+
+        targetDist += delta * 0.8;
+
+        targetDist = Math.max(160, Math.min(600, targetDist));
+    }
+
+    lastPinchDistance = distance;
+
+}, { passive: false });
+
+window.addEventListener("touchend", () => {
+    lastPinchDistance = null;
+});
 // ======================================
 // PARTE 8 - ANIMACIÓN
 // ======================================
