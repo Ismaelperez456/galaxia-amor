@@ -393,3 +393,73 @@ canvas{
         opacity:.85;
     }
 }
+
+/* ========================= */
+/* MENSAJE FINAL */
+/* ========================= */
+
+#finalModal{
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,.85);
+    padding: 20px;
+    z-index: 99999;
+}
+
+.finalContent{
+    width: 90%;
+    max-width: 650px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: #111;
+    color: white;
+    border: 2px solid #ff4d88;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0 0 40px #ff4d88;
+}
+
+.finalContent h2{
+    font-size: 34px;
+    color: #ff4d88;
+    margin-bottom: 20px;
+}
+
+.finalContent p{
+    font-size: 20px;
+    line-height: 1.8;
+}
+
+.finalContent button{
+    margin-top: 20px;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 12px;
+    background: #ff4d88;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+@media (max-width:768px){
+
+    .finalContent{
+        width: 95%;
+        padding: 18px;
+    }
+
+    .finalContent h2{
+        font-size: 26px;
+    }
+
+    .finalContent p{
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+}
