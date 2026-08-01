@@ -264,6 +264,7 @@ scene.add(ring2);
 // ======================================
 
 const WORDS = [
+
 "❤️ Te amo",
 "💕 Mi amor",
 "🥰 Mi vida",
@@ -647,14 +648,6 @@ crearFoto(
      quiero que recuerdes una sola cosa: te amo hoy, mañana y todos los días que me regale la vida. 
      Gracias por ser la mujer de mis sueños. ❤️`
 );
-
-
-
-
-
-
-
-
 
 // ======================================
 // PARTE 7 - CONTROLES DE LA CÁMARA
