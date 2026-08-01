@@ -420,6 +420,103 @@ const textGroup = new THREE.Group();
 scene.add(textGroup);
 const fotos = [];
 
+// =====================================
+// ❤️ HEART OF STARS
+// =====================================
+
+const heartGroup = new THREE.Group();
+scene.add(heartGroup);
+
+const HEART_POINTS = 10000;
+
+const heartGeometry = new THREE.BufferGeometry();
+
+const heartPositions =
+new Float32Array(HEART_POINTS * 3);
+
+const heartColors =
+new Float32Array(HEART_POINTS * 3);
+
+const pink = new THREE.Color(0xff2d96);
+const lightPink = new THREE.Color(0xff80d5);
+const white = new THREE.Color(0xffffff);
+
+let p = 0;
+let c = 0;
+
+for(let i = 0; i < HEART_POINTS; i++){
+
+    const t = Math.random() * Math.PI * 2;
+
+    const x = 16 * Math.pow(Math.sin(t),3);
+
+    const y =
+        13 * Math.cos(t)
+        -5 * Math.cos(2*t)
+        -2 * Math.cos(3*t)
+        -Math.cos(4*t);
+
+    const spread = (Math.random()-0.5) * 2.5;
+
+    heartPositions[p++] = x * 3 + spread;
+    heartPositions[p++] = y * 3 + 170 + spread;
+    heartPositions[p++] = spread * 3;
+
+    const r = Math.random();
+
+    const color =
+        r < 0.55 ? pink :
+        r < 0.90 ? lightPink :
+        white;
+
+    heartColors[c++] = color.r;
+    heartColors[c++] = color.g;
+    heartColors[c++] = color.b;
+
+}
+
+heartGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+        heartPositions,
+        3
+    )
+);
+
+heartGeometry.setAttribute(
+    "color",
+    new THREE.BufferAttribute(
+        heartColors,
+        3
+    )
+);
+
+const heartMaterial = new THREE.PointsMaterial({
+
+    size: 1.8,
+
+    vertexColors: true,
+
+    transparent: true,
+
+    opacity: 0.95,
+
+    depthWrite: false,
+
+    blending: THREE.AdditiveBlending
+
+});
+
+const heart = new THREE.Points(
+    heartGeometry,
+    heartMaterial
+);
+
+heart.position.set(0,10,0);
+
+heartGroup.add(heart);
+
+
 let descubiertas = 0;
 function createTextTexture(text, color = "#ffffff") {
 
@@ -911,15 +1008,7 @@ if (!foto.userData.descubierta) {
     foto.userData.descubierta = true;
     descubiertas++;
 
-    if (descubiertas === fotos.length) {
-
-        setTimeout(() => {
-
-            mostrarCartaFinal();
-
-        }, 2500);
-
-    }
+   
 
 }
 });
@@ -927,6 +1016,16 @@ if (!foto.userData.descubierta) {
 closePhoto.addEventListener("click", () => {
 
     modal.style.display = "none";
+
+    if (descubiertas === fotos.length) {
+
+        setTimeout(() => {
+
+            mostrarCartaFinal();
+
+        }, 1000);
+
+    }
 
 });
 
