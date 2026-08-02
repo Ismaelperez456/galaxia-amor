@@ -413,8 +413,9 @@ const WORDS = [
 "🌎 Mi amor sincero",
 "☀️ Mi bella luz",
 "💫 Mi cielo azul",
-"🌺 Eres especial",
-"🦋 Mi única estrella",
+"🌺 Mi Gordita",
+"🦋 Mi toxica",
+
 ];
 
 const textGroup = new THREE.Group();
@@ -483,7 +484,6 @@ heartGeometry.setAttribute(
         3
     )
 );
-
 heartGeometry.setAttribute(
     "color",
     new THREE.BufferAttribute(
@@ -543,6 +543,7 @@ function createTextTexture(text, color = "#ffffff") {
     return new THREE.CanvasTexture(canvas);
 
 }
+
 function crearFoto(ruta, x, y, z, mensaje) {
 
     const textura = new THREE.TextureLoader().load(ruta);
@@ -605,7 +606,7 @@ WORDS.forEach((word, index) => {
 });
 
 crearFoto(
-    "fotos/bebe.png",
+    "fotos/bebe.png",  
     120,
     20,
     -80,
