@@ -111,20 +111,30 @@ createStars();
 // ======================================
 
 // Luz principal
-const light = new THREE.PointLight(0xffffff, 3);
+const light = new THREE.PointLight(0xff8844, 7, 1000);
 light.position.set(0, 0, 0);
 scene.add(light);
 
 // Luz ambiental
-const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+const ambient = new THREE.AmbientLight(0xffccaa, 0.9);
 scene.add(ambient);
 
 // Material del núcleo
-const coreMaterial = new THREE.MeshPhongMaterial({
-    color: 0x222222,
-    transparent: true,
-    opacity: 0.65,
-    shininess: 200
+const coreMaterial = new THREE.MeshPhysicalMaterial({
+
+    color: 0x120505,
+
+    emissive: 0xff4a00,
+    emissiveIntensity: 0.45,
+
+    roughness: 0.55,
+
+    metalness: 0.25,
+
+    clearcoat: 1,
+
+    clearcoatRoughness: 0.08
+
 });
 
 // Esfera central
@@ -134,6 +144,32 @@ const core = new THREE.Mesh(
 );
 
 scene.add(core);
+
+// =====================================
+// CAPA DE LAVA
+// =====================================
+
+const lava = new THREE.Mesh(
+
+    new THREE.SphereGeometry(40.8,64,64),
+
+    new THREE.MeshBasicMaterial({
+
+        color:0xff5500,
+
+        transparent:true,
+
+        opacity:0.18,
+
+        blending:THREE.AdditiveBlending,
+
+        wireframe:true
+
+    })
+
+);
+
+scene.add(lava);
 
 // ===============================
 // TEXTO CENTRAL
@@ -217,14 +253,26 @@ function createGlowTexture(size = 768) {
 
 // Sprite brillante
 const glow = new THREE.Sprite(
+
     new THREE.SpriteMaterial({
+
         map: createGlowTexture(),
+
+        color: 0xff7a00,
+
         transparent: true,
-        depthWrite: false
+
+        opacity: 0.95,
+
+        depthWrite: false,
+
+        blending: THREE.AdditiveBlending
+
     })
+
 );
 
-glow.scale.set(500, 500, 1);
+glow.scale.set(620,620,1);
 
 scene.add(glow);
 
@@ -429,7 +477,7 @@ const fotos = [];
 const heartGroup = new THREE.Group();
 scene.add(heartGroup);
 
-const HEART_POINTS = 10000;
+const HEART_POINTS = 18000;
 
 const heartGeometry = new THREE.BufferGeometry();
 
@@ -460,8 +508,8 @@ for(let i = 0; i < HEART_POINTS; i++){
 
     const spread = (Math.random()-0.5) * 2.5;
 
-    heartPositions[p++] = x * 3 + spread;
-    heartPositions[p++] = y * 3 + 170 + spread;
+    heartPositions[p++] = x * 4.2 + spread;
+    heartPositions[p++] = y * 3.6 + 70 + spread;
     heartPositions[p++] = spread * 3;
 
     const r = Math.random();
@@ -492,15 +540,102 @@ heartGeometry.setAttribute(
     )
 );
 
+function createStarTexture(){
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = 128;
+    canvas.height = 128;
+
+    const ctx = canvas.getContext("2d");
+
+    const g = ctx.createRadialGradient(
+        64,64,0,
+        64,64,64
+    );
+
+    g.addColorStop(0,"rgba(255,255,255,1)");
+    g.addColorStop(0.15,"rgba(255,220,240,1)");
+    g.addColorStop(0.35,"rgba(255,120,190,.9)");
+    g.addColorStop(0.7,"rgba(255,60,120,.25)");
+    g.addColorStop(1,"rgba(255,0,0,0)");
+
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,128,128);
+
+    return new THREE.CanvasTexture(canvas);
+
+}
+
 const heartMaterial = new THREE.PointsMaterial({
 
-    size: 1.8,
+    map:createStarTexture(),
 
-    vertexColors: true,
+    size:2.2,
+
+    vertexColors:true,
+
+    transparent:true,
+
+    opacity:1,
+
+    depthWrite:false,
+
+    blending:THREE.AdditiveBlending,
+
+    alphaTest:0.01
+
+});
+
+
+
+const heart = new THREE.Points(
+    heartGeometry,
+    heartMaterial
+);
+
+heart.position.set(0,0,0);
+
+ heartGroup.add(heart);
+
+ // =====================================
+// HALO DEL CORAZÓN
+// =====================================
+
+const haloGeometry = new THREE.BufferGeometry();
+
+const HALO_POINTS = 6000;
+
+const haloPositions = new Float32Array(HALO_POINTS * 3);
+
+for (let i = 0; i < HALO_POINTS; i++) {
+
+    const angle = Math.random() * Math.PI * 2;
+    const radius = 42 + Math.random() * 18;
+    const height = (Math.random() - 0.5) * 45;
+
+    haloPositions[i * 3] = Math.cos(angle) * radius;
+    haloPositions[i * 3 + 1] = height + 70;
+    haloPositions[i * 3 + 2] = Math.sin(angle) * radius;
+
+}
+
+haloGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(haloPositions, 3)
+);
+
+const haloMaterial = new THREE.PointsMaterial({
+
+    map: createStarTexture(),
+
+    size: 2.4,
+
+  color: 0xffffff,
 
     transparent: true,
 
-    opacity: 0.95,
+    opacity: 0.50,
 
     depthWrite: false,
 
@@ -508,14 +643,37 @@ const heartMaterial = new THREE.PointsMaterial({
 
 });
 
-const heart = new THREE.Points(
-    heartGeometry,
-    heartMaterial
+const halo = new THREE.Points(
+    haloGeometry,
+    haloMaterial
 );
 
-heart.position.set(0,10,0);
+heartGroup.add(halo);
 
-heartGroup.add(heart);
+
+// =====================================
+// 🌠 ESTRELLA FUGAZ
+// =====================================
+
+const shootingStar = new THREE.Mesh(
+
+    new THREE.SphereGeometry(1.2,16,16),
+
+    new THREE.MeshBasicMaterial({
+        color:0xffffff
+    })
+
+);
+
+shootingStar.visible = false;
+
+scene.add(shootingStar);
+
+let shooting = false;
+
+let starProgress = 0;
+
+let nextStar = 1 + Math.random()* 2;
 
 
 let descubiertas = 0;
@@ -748,6 +906,47 @@ function animate() {
 
     time += 0.01;
 
+    // =====================================
+    // 🌠 ESTRELLA FUGAZ
+    // =====================================
+
+    nextStar -= 0.01;
+
+    if (!shooting && nextStar <= 0) {
+
+        shooting = true;
+
+        starProgress = 0;
+
+        shootingStar.visible = true;
+
+        shootingStar.position.set(-600, 260, -250);
+
+    }
+
+    if (shooting) {
+
+        starProgress += 8;
+
+        shootingStar.position.x += 8;
+        shootingStar.position.y -= 3;
+        shootingStar.position.z += 2;
+
+        if (starProgress > 1200) {
+
+            shooting = false;
+
+            shootingStar.visible = false;
+
+            nextStar = 1 + Math.random() * 2;
+
+        }
+
+    }
+
+    
+    // Girar anillos...
+
     // Girar anillos
     ring1.rotation.z += 0.002;
     ring2.rotation.z -= 0.0015;
@@ -759,9 +958,22 @@ function animate() {
 
     // Pulso del brillo
     const glowScale =
-        500 * (1 + 0.03 * Math.sin(time * 0.4));
+    620 +
+    Math.sin(time * 2) * 18;
 
-    glow.scale.set(glowScale, glowScale, 1);
+glow.scale.set(
+
+    glowScale,
+
+    glowScale,
+
+    1
+
+);
+
+glow.material.opacity =
+    0.85 +
+    Math.sin(time * 3) * 0.12;
 
     // Movimiento de los textos
     textGroup.children.forEach(sprite => {
@@ -851,11 +1063,66 @@ if (cinematic) {
 
     core.rotation.y += 0.02;
 
+lava.rotation.y -= 0.0015;
+lava.rotation.x += 0.0008;
+
+lava.material.opacity =
+    0.14 +
+    Math.sin(time * 4) * 0.05;
 } else {
 
     glow.material.opacity = 0.75;
 
 }
+
+// ❤️ Animación del corazón
+
+const beat = 1 + Math.sin(time * 5) * 0.12;
+
+const breathe = 1 + Math.sin(time * 1.2) * 0.05;
+
+heart.scale.set(
+    beat * breathe,
+    beat * breathe,
+    beat * breathe
+);
+
+// Halo de energía
+heartMaterial.size =
+    1.8 +
+    Math.sin(time * 5) * 0.4 +
+    Math.abs(Math.sin(time * 5)) * 0.3;
+
+heart.rotation.y += 0.004;
+heart.rotation.x = Math.sin(time * 0.4) * 0.08;
+heart.rotation.z = Math.cos(time * 0.3) * 0.05;
+heartGroup.position.x = Math.sin(time * 0.25) * 2;
+
+heartGroup.position.y = 30 + Math.sin(time * 1.2) * 2;
+
+heartGroup.position.z = Math.cos(time * 0.25) * 2;
+// ❤️ La foto sigue al corazón
+
+
+
+heartMaterial.opacity =
+    0.65 +
+    Math.abs(Math.sin(time * 5)) * 0.35;
+heartMaterial.size = 1.8 + Math.sin(time * 5) * 0.3;
+
+const positions = heart.geometry.attributes.position.array;
+
+for (let i = 0; i < positions.length; i += 3) {
+
+    const wave = Math.sin(time * 5 + i * 0.015);
+
+    positions[i]     += wave * 0.015;
+    positions[i + 1] += wave * 0.010;
+    positions[i + 2] += wave * 0.040;
+
+}
+
+heart.geometry.attributes.position.needsUpdate = true;
 
 renderer.render(scene, camera);
 
@@ -973,8 +1240,6 @@ const closePhoto = document.getElementById("closePhoto");
 const finalModal = document.getElementById("finalModal");
 const closeFinal = document.getElementById("closeFinal");
 
-
-
 window.addEventListener("click", (event) => {
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -986,25 +1251,22 @@ window.addEventListener("click", (event) => {
 
     if (hit.length > 0) {
 
-    console.log(hit[0]);
+        const foto = hit[0].object;
 
-    modal.style.display = "flex";
+        modal.style.display = "flex";
 
-    modalImage.src = hit[0].object.material.map.image.src;
+        modalImage.src = foto.material.map.image.src;
+        modalText.textContent = foto.userData.mensaje;
 
-    modalText.textContent = hit[0].object.userData.mensaje;
+        if (!foto.userData.descubierta) {
 
-}
-const foto = hit[0].object;
+            foto.userData.descubierta = true;
+            descubiertas++;
 
-if (!foto.userData.descubierta) {
+        }
 
-    foto.userData.descubierta = true;
-    descubiertas++;
+    }
 
-   
-
-}
 });
 
 closePhoto.addEventListener("click", () => {
@@ -1028,8 +1290,10 @@ closeFinal.addEventListener("click", () => {
     finalModal.style.display = "none";
 
 });
+
 function mostrarCartaFinal() {
 
     finalModal.style.display = "flex";
 
 }
+
